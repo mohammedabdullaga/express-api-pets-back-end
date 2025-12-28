@@ -13,8 +13,16 @@ mongoose.connection.on('connected', () => {
 
 app.use(express.json());
 app.use(logger('dev'));
+const petCtrl = require('./controllers/pets');
+
+
 
 // Routes go here
+
+app.use('/pets', petCtrl);
+
+
+
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
