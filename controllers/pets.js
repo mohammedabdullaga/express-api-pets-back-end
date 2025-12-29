@@ -44,17 +44,35 @@ router.get('/:id', async (req,res) => {
 router.delete('/:id', async (req,res) => {
     try {
         const {id} = req.params
-        const pet = await Pet.findByIdAndDelete(id)
+        const pet = await Pet.findByIdAndDelete(id);
         if (!pet){
-            res.status(404).json('error: pet not found')
+            res.status(404).json({error: 'pet not found'});
+        } else {
+            res.status(200).json({pet});
+        }
+        res.status(200).json('succesfully deleted');
+    } catch (error) {
+       console.log(error);
+       res.status(500).json({error: 'faild to Delete pet'}) ;
+    }
+});
+
+router.put('/:id', async (req,res) => {
+    try {
+        const {id} = req.params
+        const pet = await Pet.findByIdAndUpdate(req.params.id,req.body, {new: true});
+        if (!pet) {
+            res.status(404).json({error: 'pet not found'});
         } else {
             res.status(200).json({pet})
         }
-        res.status(200).json('succesfully deleted')
+        res.status(200).json('succesfully updated')
     } catch (error) {
-       console.log(error);
-       res.status(500).json({error: 'faild to Delete pet'}) 
+        console.log(error);
+        res.status(500).json({error: 'faild to update pet'});
     }
-})
+});
+
+
 
 module.exports = router;
